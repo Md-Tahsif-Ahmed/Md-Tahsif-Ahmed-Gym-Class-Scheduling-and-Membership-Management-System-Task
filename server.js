@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 connectDB();
 
 app.use('/api/users', userRoutes);
-app.use('/api/class', classRoutes);
+app.use('/api', classRoutes);
 
 
 
