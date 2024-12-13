@@ -10,7 +10,7 @@ const createClass = async (req, res) => {
             return res.status(400).json({ message: 'Maximum schedules reached for the day' });
         }
 
-        const newClass = new Class({ date, trainer: trainerId });
+        const newClass = new Class({ date, trainer: trainerId,  duration: 2 });
         await newClass.save();
         res.status(201).json({ message: 'Class scheduled successfully', class: newClass });
     } catch (error) {
@@ -50,5 +50,34 @@ const viewSchedule = async (req, res) => {
         res.status(500).json({ message: 'Error fetching schedule', error });
     }
 };
-module.exports = {  viewSchedule, createClass, getAllClasses };
 
+// class book by trianee
+const bookClass = async (req, res) => {
+    try {
+        const { classId } = req.body;
+        const userId = req.user.id;
+
+        // Fetch class details
+        const selectedClass = await Class.findById(classId);
+
+        // Check if the class is already full
+        if (selectedClass.attendees.length >= 10) {
+            return res.status(400).json({ message: 'Class is full. Booking not allowed.' });
+        }
+
+        // Check if the trainee has already booked this class
+        if (selectedClass.attendees.includes(userId)) {
+            return res.status(400).json({ message: 'You have already booked this class.' });
+        }
+
+        // Add trainee to the class
+        selectedClass.attendees.push(userId);
+        await selectedClass.save();
+
+        res.status(200).json({ message: 'Class booked successfully', class: selectedClass });
+    } catch (error) {
+        res.status(500).json({ message: 'Error booking class', error: error.message });
+    }
+};
+
+module.exports = {  viewSchedule, createClass, getAllClasses, bookClass };
