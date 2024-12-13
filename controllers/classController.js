@@ -62,7 +62,7 @@ const bookClass = async (req, res) => {
 
         // Check if the class is already full
         if (selectedClass.attendees.length >= 10) {
-            return res.status(400).json({ message: 'Class is full. Booking not allowed.' });
+            return res.status(400).json({ message: 'Class schedule is full. Maximum 10 trainees allowed per schedule."' });
         }
 
         // Check if the trainee has already booked this class
