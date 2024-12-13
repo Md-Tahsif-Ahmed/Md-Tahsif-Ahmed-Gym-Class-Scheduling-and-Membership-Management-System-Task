@@ -113,7 +113,7 @@ PUT /api/users/profile
 
 Description: Update trainee profile.
 
-Parameters: { email, password }
+Parameters: {name, email, password }
 
 Response:
 
@@ -182,7 +182,7 @@ PORT=5000
 
 Start the Server:
 
-nodemon server.js
+node server.js
 
 Access the API:
 The server will be running at http://localhost:5000.
