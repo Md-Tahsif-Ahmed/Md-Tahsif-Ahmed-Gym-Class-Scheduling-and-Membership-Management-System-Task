@@ -31,9 +31,7 @@ const login = async (req, res) => {
     }
 };
 
-
-
-// .....*****
+// .....trianee  update
 const updateProfile = async (req, res) => {
     try {
         const { id } = req.user; // Extract user ID from token
@@ -50,5 +48,21 @@ const updateProfile = async (req, res) => {
         res.status(500).json({ message: 'Error updating profile', error });
     }
 };
-module.exports = { register, login, updateProfile };
+
+// trainer manage by admin
+const createTrainer = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const trainer = new User({ email, password: hashedPassword, role: 'trainer' });
+        await trainer.save();
+        res.status(201).json({ message: 'Trainer created successfully', trainer });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating trainer', error });
+    }
+};
+
+
+
+module.exports = { register, login, updateProfile, createTrainer };
 
