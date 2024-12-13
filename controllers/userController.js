@@ -4,9 +4,9 @@ const User = require('../models/User');
 
 const register = async (req, res) => {
     try {
-        const { email, password, role } = req.body;
+        const { name, email, password, role } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ email, password: hashedPassword, role });
+        const user = new User({ name, email, password: hashedPassword, role });
         await user.save();
         res.status(201).json({ message: 'User created successfully', user });
     } catch (error) {
@@ -31,4 +31,24 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { register, login };
+
+
+// .....*****
+const updateProfile = async (req, res) => {
+    try {
+        const { id } = req.user; // Extract user ID from token
+        const { name, email, password } = req.body;
+
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (email) updateData.email = email;
+        if (password) updateData.password = await bcrypt.hash(password, 10);
+
+        const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
+        res.json({ message: 'Profile updated successfully', user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating profile', error });
+    }
+};
+module.exports = { register, login, updateProfile };
+
