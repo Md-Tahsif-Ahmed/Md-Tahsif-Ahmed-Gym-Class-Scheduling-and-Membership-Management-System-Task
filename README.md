@@ -15,6 +15,8 @@ The system enforces business rules such as class capacity limits, daily schedule
 Relational Diagram
 
 Below is the relational diagram for the backend database:
+![image](https://github.com/user-attachments/assets/fe3a1b42-8de7-4cab-b4f4-829a445d4303)
+
 
 
 Technology Stack
